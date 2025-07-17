@@ -1,18 +1,15 @@
-# ipapp • v4.0.2
+# ipapp • v4.0.3
 
 Tiny **stdlib-only** client for [ip.app](https://ip.app). No dependencies on third party packages.
-Query your public IP address, ASN data, request headers, user-agent string, and more — programmatically *or* from the command line.
+Query your public IP address, ASN data, location, timezone, and more — programmatically *or* from the command line.
 
 ---
 
 ## 🛠 Installation
 
 ```bash
-# From PyPI (after you publish)
+# From PyPI: https://pypi.org/project/ipapp/
 pip install ipapp
-
-# Local development / editable install (with test extras)
-python -m pip install -e .[dev]
 ```
 
 Python ≥ 3.8, no external runtime dependencies.
@@ -32,7 +29,8 @@ python3 -m pip install -e '.[dev]'
 Alternatively you can keep things completely separate with **pipx**:
 
 ```bash
-pipx install --editable . --pip-args='.[dev]'
+# From PyPI: https://pypi.org/project/ipapp/
+pipx install ipapp
 ```
 
 ---
@@ -185,19 +183,25 @@ pytest -q
 
 ```bash
 # Ensure build tools are present
-python -m pip install build twine
+pipx install build twine
+
+# Remove old version
+rm -rf dist/*
 
 # Build wheel + sdist into ./dist/
-python -m build
+pyproject-build
 
 # Verify metadata is valid (no upload)
 twine check dist/*
+
+# When you're ready to release
+twine upload dist/*
 ```
 
-When you're ready to release, upload with Twine (or wire this into CI):
+Wait a few minutes and test by reinstalling using pipx:
 
 ```bash
-twine upload dist/*
+pipx reinstall ipapp
 ```
 
 ---
@@ -210,6 +214,15 @@ twine upload dist/*
 
 ---
 
-> Note: Version starts at 4.0.0 to avoid conflicts with a previously removed package on PyPI using the same name.
+## 🔗 Links
+
+- **PyPI**: https://pypi.org/project/ipapp/
+- **GitHub**: https://github.com/fili/ipapp-client
+- **IP.app API**: https://ip.app
+- **IP.app API Documentation**: https://github.com/fili/ipapp
+
+---
+
+> Note: Versioning starts at 4.0.0 to avoid conflicts with a previously removed package on PyPI using the same name.
 
 MIT licensed – have fun!
