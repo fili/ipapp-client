@@ -1,9 +1,9 @@
 """
 Exhaustive, network-free test-suite for ipapp (23 cases).
 
-A smart stub for ipapp.client._fetch emulates the library’s own
-“Unknown → None / IPAppError” rules so wrappers behave exactly as they
-would on real responses.
+A smart stub for ipapp.client._fetch emulates the library's own
+"Unknown → None / IPAppError" rules and boolean conversion logic so wrappers
+behave exactly as they would on real responses.
 """
 from __future__ import annotations
 from typing import Any
@@ -47,6 +47,10 @@ def smart_stub(ret: Any):
                     if strict:
                         raise IPAppError("IP address unknown")
                     val["ip"] = None
+            # convert numeric boolean fields to proper booleans (same as _fetch)
+            if "is_eu_country" in val:
+                if isinstance(val["is_eu_country"], (int, str)):
+                    val["is_eu_country"] = bool(int(val["is_eu_country"]))
             return val
         return ret
 
@@ -195,3 +199,50 @@ def test_asn_json_include_ip_unknown(monkeypatch):
     assert ipapp.get_asn(json=True, include_ip=True)["ip"] is None
     with pytest.raises(IPAppError):
         ipapp.get_asn(json=True, include_ip=True, strict=True)
+
+
+# ---------------------------------------------------------------------------
+# Boolean conversion tests
+# ---------------------------------------------------------------------------
+def test_boolean_conversion_numeric_1(monkeypatch):
+    data = {"asn": 12345, "is_eu_country": 1}
+    monkeypatch.setattr(client, "_fetch", smart_stub(data))
+    result = ipapp.get_asn(json=True)
+    assert result["is_eu_country"] is True
+
+
+def test_boolean_conversion_numeric_0(monkeypatch):
+    data = {"asn": 12345, "is_eu_country": 0}
+    monkeypatch.setattr(client, "_fetch", smart_stub(data))
+    result = ipapp.get_asn(json=True)
+    assert result["is_eu_country"] is False
+
+
+def test_boolean_conversion_string_1(monkeypatch):
+    data = {"asn": 12345, "is_eu_country": "1"}
+    monkeypatch.setattr(client, "_fetch", smart_stub(data))
+    result = ipapp.get_asn(json=True)
+    assert result["is_eu_country"] is True
+
+
+def test_boolean_conversion_head_mode(monkeypatch):
+    hdr = {
+        "x-ipapp-asn": "AS12345",
+        "x-ipapp-ip": "1.2.3.4",
+        "x-ipapp-ip-version": "4",
+        "is_eu_country": "1"
+    }
+    monkeypatch.setattr(client, "_fetch", smart_stub(hdr))
+    result = ipapp.get_asn(head=True, include_ip=True)
+    assert result["is_eu_country"] is True
+
+
+def test_boolean_conversion_location_head(monkeypatch):
+    hdr = {
+        "x-ipapp-loc-city": "Berlin",
+        "x-ipapp-loc-country": "DE",
+        "x-ipapp-loc-is_eu_country": "1"
+    }
+    monkeypatch.setattr(client, "_fetch", smart_stub(hdr))
+    result = ipapp.get_location(head=True)
+    assert result["is_eu_country"] is True

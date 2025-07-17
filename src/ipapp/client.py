@@ -34,6 +34,17 @@ class IPAppError(RuntimeError):
     """Raised when ip.app cannot be reached or returns invalid data."""
 
 
+def _convert_numeric_booleans(data: Any) -> Any:
+    """Convert numeric boolean fields to proper booleans."""
+    if isinstance(data, dict):
+        result = data.copy()
+        if "is_eu_country" in result:
+            if isinstance(result["is_eu_country"], (int, str)):
+                result["is_eu_country"] = bool(int(result["is_eu_country"]))
+        return result
+    return data
+
+
 def _fetch(
     path: str,
     *,
@@ -93,7 +104,7 @@ def _fetch(
                             )
                         elif strict:
                             raise IPAppError("IP address unknown")
-                    return hdrs
+                    return _convert_numeric_booleans(hdrs)
 
                 val = resp.headers.get(header)
                 if header.lower() == _IP_HDR:
@@ -130,6 +141,9 @@ def _fetch(
                 if strict:
                     raise IPAppError("IP address unknown")
                 data["ip"] = None
+        
+        # convert numeric boolean fields to proper booleans
+        data = _convert_numeric_booleans(data)
 
         if include_ip:
             data["ip"] = (
@@ -238,11 +252,16 @@ def get_tz(
             if strict and (ip in (None, "Unknown")):
                 raise IPAppError("IP address unknown")
             # Returns the timezone string in header-only mode with caller IP
-            return {
+            response = {
                 "tz": tz,
                 "ip": None if ip in (None, "Unknown") else ip,
                 "ip_version": None if ver in (None, "Unknown") else ver,
             }
+            # Add any additional headers that might contain boolean fields
+            for key, value in hdr.items():
+                if key.lower() not in [_TZ_HDR, _IP_HDR, _IP_VER_HDR]:
+                    response[key] = value
+            return _convert_numeric_booleans(response)
         # Returns the timezone string in header-only mode without caller IP
         return _fetch(
             "/tz",
@@ -315,7 +334,7 @@ def get_location(
 
         if strict and not result:
             raise IPAppError("no x-ipapp-* request headers found")
-        return result
+        return _convert_numeric_booleans(result)
 
     # Returns the location in JSON mode with or without caller IP
     if json:
@@ -362,11 +381,16 @@ def get_asn(
             if strict and (ip in (None, "Unknown")):
                 raise IPAppError("IP address unknown")
             # Returns the ASN string in header-only mode with caller IP
-            return {
+            response = {
                 "asn": asn,
                 "ip": None if ip in (None, "Unknown") else ip,
                 "ip_version": None if ver in (None, "Unknown") else ver,
             }
+            # Add any additional headers that might contain boolean fields
+            for key, value in hdr.items():
+                if key.lower() not in [_ASN_HDR, _IP_HDR, _IP_VER_HDR]:
+                    response[key] = value
+            return _convert_numeric_booleans(response)
         # Returns the ASN string in header-only mode without caller IP
         return _fetch(
             "/asn",

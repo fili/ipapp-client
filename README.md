@@ -1,4 +1,4 @@
-# ipapp • v4.0.0
+# ipapp • v4.0.2
 
 Tiny **stdlib-only** client for [ip.app](https://ip.app). No dependencies on third party packages.
 Query your public IP address, ASN data, request headers, user-agent string, and more — programmatically *or* from the command line.
