@@ -8,8 +8,10 @@ version = "0.1.0"
 description = "Tiny ip.app client – query your IP, ASN, location, timezone & more."
 readme = "README.md"
 requires-python = ">=3.8"
-authors = [{name = "Fili", email = ""}]
+authors = [{name = "Fili", email = "code@ip.app"}]
 license = {text = "MIT"}
+homepage = "https://github.com/fili/ipapp-client"
+repository = "https://github.com/fili/ipapp-client"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",

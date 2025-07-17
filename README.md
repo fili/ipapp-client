@@ -77,36 +77,65 @@ info = ipapp.get_asn(json=True, include_ip=True)
 # {'asn': 12345, 'holder': 'Example ISP', ..., 'ip': '203.0.113.42', 'ip_version': '4'}
 ```
 
-### User-Agent string
+### Timezone (plain-text)
 
 ```python
 import ipapp
-print(ipapp.get_user_agent())  # → "python-urllib/3.12"
+print(ipapp.get_tz())          # → "Europe/Berlin"
 ```
 
-### User-Agent string (JSON)
+### Timezone (JSON)
 
 ```python
 import ipapp
-print(ipapp.get_user_agent(json=True))  # {"ua": "python-urllib/3.12", ...}
+info = ipapp.get_tz(json=True)
+# {'tz': 'Europe/Berlin', ...}
 ```
 
-### User-Agent with caller IP merged (JSON only)
+### Timezone with caller IP merged (JSON only)
 
 ```python
 import ipapp
-print(ipapp.get_user_agent(json=True, include_ip=True))
-# {"ua": "python-urllib/3.12", "ip": "203.0.113.42", "ip_version": "4"}
+info = ipapp.get_tz(json=True, include_ip=True)
+# {'tz': 'Europe/Berlin', 'ip': '203.0.113.42', 'ip_version': '4'}
 ```
 
-### Request headers (JSON)
+### Location (JSON)
 
 ```python
 import ipapp
-headers = ipapp.get_headers()  # dict with all inbound headers
+info = ipapp.get_location()    # JSON by default
+# {'city': 'Berlin', 'country': 'DE', 'region': 'Berlin', ...}
+```
+
+### Location with caller IP merged (JSON only)
+
+```python
+import ipapp
+info = ipapp.get_location(include_ip=True)
+# {'city': 'Berlin', 'country': 'DE', ..., 'ip': '203.0.113.42', 'ip_version': '4'}
+```
+
+### Location (plain-text)
+
+```python
+import ipapp
+print(ipapp.get_location(json=False))  # raw plain-text response
 ```
 
 All helpers raise `ipapp.IPAppError` on network problems or invalid responses.
+
+### Strict mode
+
+All functions support a `strict=True` parameter that raises `IPAppError` instead of returning `None` when the service responds with "Unknown":
+
+```python
+import ipapp
+try:
+    ip = ipapp.get_ip(strict=True)
+except ipapp.IPAppError:
+    print("IP address is unknown")
+```
 
 ---
 
@@ -123,14 +152,20 @@ Run each endpoint separately:
 
 ```bash
 ipapp ip                     # same as default
+ipapp ip --json              # {"ip": "198.51.100.7"}
+ipapp ip --head              # header-only mode
 
 ipapp asn                    # AS12345
 ipapp asn --json             # {"asn": 12345, ...}
+ipapp asn --json --include-ip # {"asn": 12345, ..., "ip": "198.51.100.7"}
 
-ipapp loc                    #
+ipapp tz                     # Europe/Berlin
+ipapp tz --json              # {"tz": "Europe/Berlin", ...}
+ipapp tz --json --include-ip # {"tz": "Europe/Berlin", "ip": "198.51.100.7"}
 
-ipapp headers                # {"User-Agent": "...", ...}
-ipapp headers --json         # explicit, same output
+ipapp location               # {"city": "Berlin", "country": "DE", ...}
+ipapp location --include-ip  # {"city": "Berlin", ..., "ip": "198.51.100.7"}
+ipapp location --head        # header-only mode
 ```
 
 ---

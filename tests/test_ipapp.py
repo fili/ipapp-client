@@ -127,7 +127,7 @@ def test_tz_include_ip_plain_ignored(monkeypatch):
 # get_location  (6 tests)
 # ---------------------------------------------------------------------------
 def test_location_head(monkeypatch):
-    hdr = {"X-Ipapp-Location-City": "Berlin", "X-Ipapp-Location-Country": "DE"}
+    hdr = {"x-ipapp-loc-city": "Berlin", "x-ipapp-loc-country": "DE"}
     monkeypatch.setattr(client, "_fetch", smart_stub(hdr))
     out = ipapp.get_location(head=True)
     assert out == {"city": "Berlin", "country": "DE"}
