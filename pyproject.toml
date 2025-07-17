@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ipapp"
+version = "0.1.0"
+description = "Tiny ip.app client – query your IP, ASN, location, timezone & more."
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{name = "Fili", email = ""}]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+ipapp = "ipapp.__main__:main"
+
+# --- src-layout hook ---
+[tool.setuptools.packages.find]
+where = ["src"]
