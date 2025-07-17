@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ipapp"
-version = "0.1.0"
-description = "Tiny ip.app client – query your IP, ASN, location, timezone & more."
+version = "4.0.0"
+description = "A tiny ip.app client to query your IP, ASN, location & timezone using the 100% free IP.app API. Fast & reliable IP lookup."
 readme = "README.md"
 requires-python = ">=3.8"
-authors = [{name = "Fili", email = "code@ip.app"}]
+authors = [{name = "Fili", email = "dev@fili.com"}]
 license = {text = "MIT"}
 classifiers = [
     "Programming Language :: Python :: 3",

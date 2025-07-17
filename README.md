@@ -1,4 +1,4 @@
-# ipapp • v0.1.0
+# ipapp • v4.0.0
 
 Tiny **stdlib-only** client for [ip.app](https://ip.app). No dependencies on third party packages.
 Query your public IP address, ASN data, request headers, user-agent string, and more — programmatically *or* from the command line.
@@ -209,5 +209,7 @@ twine upload dist/*
 * Open a PR – CI will run `pytest` and basic metadata checks.
 
 ---
+
+> Note: Version starts at 4.0.0 to avoid conflicts with a previously removed package on PyPI using the same name.
 
 MIT licensed – have fun!
