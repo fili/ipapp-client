@@ -10,8 +10,6 @@ readme = "README.md"
 requires-python = ">=3.8"
 authors = [{name = "Fili", email = "code@ip.app"}]
 license = {text = "MIT"}
-homepage = "https://github.com/fili/ipapp-client"
-repository = "https://github.com/fili/ipapp-client"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -20,6 +18,10 @@ classifiers = [
 
 [project.optional-dependencies]
 dev = ["pytest"]
+
+[project.urls]
+Homepage = "https://github.com/fili/ipapp-client"
+Repository = "https://github.com/fili/ipapp-client"
 
 [project.scripts]
 ipapp = "ipapp.__main__:main"

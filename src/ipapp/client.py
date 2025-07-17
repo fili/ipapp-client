@@ -4,10 +4,10 @@ ipapp HTTP helpers + public API wrappers.
 Each endpoint supports three modes:
 
   • Plain text (default)
-  • JSON body       – json=True
-  • Header-only     – head=True
+  • JSON body        json=True
+  • Header-only      head=True
 
-For non-root endpoints you may also request that the caller’s IP be
+For non-root endpoints you may also request that the caller's IP be
 injected into the JSON result:
 
     ipapp.get_asn(json=True, include_ip=True)
@@ -51,7 +51,7 @@ def _fetch(
     path        : route starting with '/', e.g. '/asn'
     json        : append '?format=json' and JSON-decode body
     head        : send HEAD instead of GET and read only headers
-    header      : if *head* – return just this header's value
+    header      : if *head* return just this header's value
     include_ip  : when GET+JSON, merge x-ipapp-ip(+version) headers
     strict      : raise `IPAppError` when the IP value is missing/Unknown
 
