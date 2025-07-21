@@ -1,4 +1,4 @@
-# ipapp • v4.0.4
+# ipapp • v4.0.6
 
 Tiny **stdlib-only** client for [ip.app](https://ip.app). No dependencies on third party packages.
 Query your public IP address, ASN data, location, timezone, and more — programmatically *or* from the command line.
@@ -217,7 +217,7 @@ pipx reinstall ipapp
 ## 🔗 Links
 
 - **PyPI**: https://pypi.org/project/ipapp/
-- **GitHub**: https://github.com/fili/ipapp-client
+- **GitHub**: https://github.com/fili/ipapp-python
 - **IP.app API**: https://ip.app
 - **IP.app API Documentation**: https://github.com/fili/ip.app
 

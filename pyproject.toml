@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ipapp"
-version = "4.0.4"
+version = "4.0.6"
 description = "A tiny ip.app client to query your IP, ASN, location & timezone using the 100% free IP.app API. Fast & reliable IP lookup."
 readme = "README.md"
 requires-python = ">=3.8"
@@ -21,8 +21,8 @@ dev = ["pytest"]
 
 [project.urls]
 Homepage = "https://github.com/fili/ip.app"
-Repository = "https://github.com/fili/ipapp-client"
-Issues = "https://github.com/fili/ipapp-client/issues"
+Repository = "https://github.com/fili/ipapp-python"
+Issues = "https://github.com/fili/ipapp-python/issues"
 
 [project.scripts]
 ipapp = "ipapp.__main__:main"
