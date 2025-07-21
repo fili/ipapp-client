@@ -81,6 +81,7 @@ def _fetch(
         url += ("&" if "?" in path else "?") + "format=json"
 
     req = _req.Request(url, method="HEAD" if head else "GET")
+    req.add_header("User-Agent", "ipapp-python/4.0.4")
 
     try:
         with _req.urlopen(req, timeout=_TIMEOUT) as resp:
